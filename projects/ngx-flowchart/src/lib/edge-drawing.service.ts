@@ -7,8 +7,8 @@ export class FcEdgeDrawingService {
   constructor() {
   }
 
-  public getEdgeDAttribute(pt1: FcCoords, pt2: FcCoords, style: string, verticalEdgeEnabled: boolean): string {
-    if (verticalEdgeEnabled){
+  public getEdgeDAttribute(pt1: FcCoords, pt2: FcCoords, style: string, verticaledgeenabled: boolean): string {
+    if (verticaledgeenabled){
       let dAddribute = `M ${pt1.x - 50}, ${pt1.y+ 25} `;
       if (style === FlowchartConstants.curvedStyle) {
         const sourceTangent = this.computeEdgeSourceTangent(pt1, pt2);

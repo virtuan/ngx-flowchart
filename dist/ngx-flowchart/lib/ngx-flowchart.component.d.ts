@@ -19,7 +19,7 @@ export declare class NgxFlowchartComponent implements OnInit, DoCheck {
     model: FcModel;
     selectedObjects: any[];
     edgeStyle: string;
-    verticalEdgeEnabled: boolean;
+    verticaledgeenabled: boolean;
     userCallbacks: UserCallbacks;
     automaticResize: boolean;
     dragAnimation: string;

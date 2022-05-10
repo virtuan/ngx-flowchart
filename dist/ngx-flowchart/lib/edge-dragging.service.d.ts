@@ -17,8 +17,8 @@ export declare class FcEdgeDraggingService {
     private readonly applyFunction;
     private readonly dragAnimation;
     private readonly edgeStyle;
-    private readonly verticalEdgeEnabled;
-    constructor(modelValidation: FcModelValidationService, edgeDrawingService: FcEdgeDrawingService, modelService: FcModelService, model: FcModel, isValidEdgeCallback: (source: FcConnector, destination: FcConnector) => boolean, applyFunction: <T>(fn: (...args: any[]) => T) => T, dragAnimation: string, edgeStyle: string, verticalEdgeEnabled: boolean);
+    private readonly verticaledgeenabled;
+    constructor(modelValidation: FcModelValidationService, edgeDrawingService: FcEdgeDrawingService, modelService: FcModelService, model: FcModel, isValidEdgeCallback: (source: FcConnector, destination: FcConnector) => boolean, applyFunction: <T>(fn: (...args: any[]) => T) => T, dragAnimation: string, edgeStyle: string, verticaledgeenabled: boolean);
     dragstart(event: Event | any, connector: FcConnector): void;
     dragover(event: Event | any): void;
     dragoverConnector(event: Event | any, connector: FcConnector): boolean;
