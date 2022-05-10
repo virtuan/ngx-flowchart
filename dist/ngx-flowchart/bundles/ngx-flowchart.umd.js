@@ -2218,6 +2218,7 @@
             this.updateNodeComponent();
             this.nodeComponent.width = this.elementRef.nativeElement.offsetWidth;
             this.nodeComponent.height = this.elementRef.nativeElement.offsetHeight;
+            this.nodeComponent.verticaledgeenabled = this.verticaledgeenabled;
         };
         FcNodeContainerComponent.prototype.ngAfterViewInit = function () {
             this.nodeComponent.width = this.elementRef.nativeElement.offsetWidth;

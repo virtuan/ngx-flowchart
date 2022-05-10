@@ -112,6 +112,7 @@ export class FcNodeContainerComponent implements OnInit, AfterViewInit, OnChange
     this.updateNodeComponent();
     this.nodeComponent.width = this.elementRef.nativeElement.offsetWidth;
     this.nodeComponent.height = this.elementRef.nativeElement.offsetHeight;
+    this.nodeComponent.verticaledgeenabled = this.verticaledgeenabled;
   }
 
   ngAfterViewInit(): void {
