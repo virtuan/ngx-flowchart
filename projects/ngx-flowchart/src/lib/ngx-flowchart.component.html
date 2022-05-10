@@ -50,7 +50,8 @@
          [modelservice]="modelService"
          [dragging]="nodeDraggingService.isDraggingNode(node)"
          [callbacks]="callbacks"
-         [userNodeCallbacks]="userNodeCallbacks">
+         [userNodeCallbacks]="userNodeCallbacks"
+         [verticalEdgeEnabled]="verticalEdgeEnabled">
     </fc-node>
   </ng-container>
   <div *ngIf="dragAnimation === flowchartConstants.dragAnimationRepaint && edgeDraggingService.edgeDragging.isDragging"

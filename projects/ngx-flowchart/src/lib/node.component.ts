@@ -57,6 +57,9 @@ export class FcNodeContainerComponent implements OnInit, AfterViewInit, OnChange
   @Input()
   dragging: boolean;
 
+  @Input()
+  verticalEdgeEnabled: boolean;
+
   @HostBinding('attr.id')
   get nodeId(): string {
     return this.node.id;
@@ -227,6 +230,9 @@ export abstract class FcNodeComponent implements OnInit {
 
   @Input()
   dragging: boolean;
+
+  @Input()
+  verticalEdgeEnabled: boolean;
 
   flowchartConstants = FlowchartConstants;
 

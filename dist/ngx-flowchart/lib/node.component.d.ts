@@ -15,6 +15,7 @@ export declare class FcNodeContainerComponent implements OnInit, AfterViewInit, 
     mouseOverConnector: FcConnector;
     modelservice: FcModelService;
     dragging: boolean;
+    verticalEdgeEnabled: boolean;
     get nodeId(): string;
     get top(): string;
     get left(): string;
@@ -44,6 +45,7 @@ export declare abstract class FcNodeComponent implements OnInit {
     mouseOverConnector: FcConnector;
     modelservice: FcModelService;
     dragging: boolean;
+    verticalEdgeEnabled: boolean;
     flowchartConstants: {
         htmlPrefix: string;
         leftConnectorType: string;
