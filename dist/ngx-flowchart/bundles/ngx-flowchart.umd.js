@@ -1312,11 +1312,11 @@
         function FcEdgeDrawingService() {
         }
         FcEdgeDrawingService.prototype.getEdgeDAttribute = function (pt1, pt2, style) {
-            var dAddribute = "M " + pt1.x + ", " + pt1.y + " ";
+            var dAddribute = "M " + (pt1.x - 50) + ", " + (pt1.y + 25) + " ";
             if (style === FlowchartConstants.curvedStyle) {
                 var sourceTangent = this.computeEdgeSourceTangent(pt1, pt2);
                 var destinationTangent = this.computeEdgeDestinationTangent(pt1, pt2);
-                dAddribute += "C " + sourceTangent.x + ", " + sourceTangent.y + " " + (destinationTangent.x - 50) + ", " + destinationTangent.y + " " + pt2.x + ", " + pt2.y;
+                dAddribute += "C " + (sourceTangent.x - 50) + ", " + sourceTangent.y + " " + (destinationTangent.x) + ", " + destinationTangent.y + " " + pt2.x + ", " + pt2.y;
             }
             else {
                 dAddribute += "L " + pt2.x + ", " + pt2.y;
