@@ -7,16 +7,29 @@ export class FcEdgeDrawingService {
   constructor() {
   }
 
-  public getEdgeDAttribute(pt1: FcCoords, pt2: FcCoords, style: string): string {
-    let dAddribute = `M ${pt1.x - 50}, ${pt1.y+ 25} `;
-    if (style === FlowchartConstants.curvedStyle) {
-      const sourceTangent = this.computeEdgeSourceTangent(pt1, pt2);
-      const destinationTangent = this.computeEdgeDestinationTangent(pt1, pt2);
-      dAddribute += `C ${sourceTangent.x - 50}, ${sourceTangent.y} ${(destinationTangent.x)}, ${destinationTangent.y} ${pt2.x}, ${pt2.y}`;
+  public getEdgeDAttribute(pt1: FcCoords, pt2: FcCoords, style: string, verticalEdgeEnabled: boolean): string {
+    if (verticalEdgeEnabled){
+      let dAddribute = `M ${pt1.x - 50}, ${pt1.y+ 25} `;
+      if (style === FlowchartConstants.curvedStyle) {
+        const sourceTangent = this.computeEdgeSourceTangent(pt1, pt2);
+        const destinationTangent = this.computeEdgeDestinationTangent(pt1, pt2);
+        dAddribute += `C ${sourceTangent.x - 50}, ${sourceTangent.y} ${(destinationTangent.x)}, ${destinationTangent.y} ${pt2.x}, ${pt2.y}`;
+      } else {
+        dAddribute += `L ${pt2.x}, ${pt2.y}`;
+      }
+      return dAddribute;
     } else {
-      dAddribute += `L ${pt2.x}, ${pt2.y}`;
+      let dAddribute = `M ${pt1.x}, ${pt1.y} `;
+      if (style === FlowchartConstants.curvedStyle) {
+        const sourceTangent = this.computeEdgeSourceTangent(pt1, pt2);
+        const destinationTangent = this.computeEdgeDestinationTangent(pt1, pt2);
+        dAddribute += `C ${sourceTangent.x}, ${sourceTangent.y} ${(destinationTangent.x - 50)}, ${destinationTangent.y} ${pt2.x}, ${pt2.y}`;
+      } else {
+        dAddribute += `L ${pt2.x}, ${pt2.y}`;
+      }
+      return dAddribute;
     }
-    return dAddribute;
+
   }
 
   public getEdgeCenter(pt1: FcCoords, pt2: FcCoords): FcCoords {

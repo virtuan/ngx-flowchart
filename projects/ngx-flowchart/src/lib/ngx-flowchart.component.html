@@ -27,7 +27,7 @@
     </g>
     <g *ngIf="dragAnimation === flowchartConstants.dragAnimationRepaint && edgeDraggingService.edgeDragging.isDragging">
       <path [attr.class]="flowchartConstants.edgeClass + ' ' + flowchartConstants.draggingClass"
-            [attr.d]="edgeDrawingService.getEdgeDAttribute(edgeDraggingService.edgeDragging.dragPoint1, edgeDraggingService.edgeDragging.dragPoint2, edgeStyle)"></path>
+            [attr.d]="edgeDrawingService.getEdgeDAttribute(edgeDraggingService.edgeDragging.dragPoint1, edgeDraggingService.edgeDragging.dragPoint2, edgeStyle, verticalEdgeEnabled)"></path>
       <circle class="edge-endpoint" r="4"
               [attr.cx]="edgeDraggingService.edgeDragging.dragPoint2.x"
               [attr.cy]="edgeDraggingService.edgeDragging.dragPoint2.y">

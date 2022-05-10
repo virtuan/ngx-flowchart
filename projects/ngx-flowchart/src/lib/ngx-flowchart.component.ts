@@ -51,6 +51,9 @@ export class NgxFlowchartComponent implements OnInit, DoCheck {
   edgeStyle: string;
 
   @Input()
+  verticalEdgeEnabled: boolean;
+
+  @Input()
   userCallbacks: UserCallbacks;
 
   @Input()
@@ -155,7 +158,7 @@ export class NgxFlowchartComponent implements OnInit, DoCheck {
 
     this.edgeDraggingService = new FcEdgeDraggingService(this.modelValidation, this.edgeDrawingService, this.modelService,
       this.model, this.userCallbacks.isValidEdge || null, applyFunction,
-      this.dragAnimation, this.edgeStyle);
+      this.dragAnimation, this.edgeStyle, this.verticalEdgeEnabled);
 
     this.mouseoverService = new FcMouseOverService(applyFunction);
 
@@ -217,7 +220,7 @@ export class NgxFlowchartComponent implements OnInit, DoCheck {
 
   getEdgeDAttribute(edge: FcEdge): string {
     return this.edgeDrawingService.getEdgeDAttribute(this.modelService.edges.sourceCoord(edge),
-      this.modelService.edges.destCoord(edge), this.edgeStyle);
+      this.modelService.edges.destCoord(edge), this.edgeStyle, this.verticalEdgeEnabled);
   }
 
   public adjustCanvasSize(fit?: boolean) {

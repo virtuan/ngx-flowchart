@@ -25,6 +25,7 @@ export class FcEdgeDraggingService {
   private readonly applyFunction: <T>(fn: (...args: any[]) => T) => T;
   private readonly dragAnimation: string;
   private readonly edgeStyle: string;
+  private readonly verticalEdgeEnabled: boolean;
 
   constructor(modelValidation: FcModelValidationService,
               edgeDrawingService: FcEdgeDrawingService,
@@ -33,7 +34,8 @@ export class FcEdgeDraggingService {
               isValidEdgeCallback: (source: FcConnector, destination: FcConnector) => boolean,
               applyFunction: <T>(fn: (...args: any[]) => T) => T,
               dragAnimation: string,
-              edgeStyle: string) {
+              edgeStyle: string,
+              verticalEdgeEnabled: boolean) {
     this.modelValidation = modelValidation;
     this.edgeDrawingService = edgeDrawingService;
     this.modelService = modelService;
@@ -42,6 +44,7 @@ export class FcEdgeDraggingService {
     this.applyFunction = applyFunction;
     this.dragAnimation = dragAnimation;
     this.edgeStyle = edgeStyle;
+    this.verticalEdgeEnabled = verticalEdgeEnabled;
   }
 
   public dragstart(event: Event | any, connector: FcConnector) {
@@ -104,7 +107,7 @@ export class FcEdgeDraggingService {
 
       this.edgeDragging.gElement.css('display', 'block');
       this.edgeDragging.pathElement.attr('d',
-        this.edgeDrawingService.getEdgeDAttribute(this.edgeDragging.dragPoint1, this.edgeDragging.dragPoint2, this.edgeStyle));
+        this.edgeDrawingService.getEdgeDAttribute(this.edgeDragging.dragPoint1, this.edgeDragging.dragPoint2, this.edgeStyle, this.verticalEdgeEnabled));
       this.edgeDragging.circleElement.attr('cx', this.edgeDragging.dragPoint2.x);
       this.edgeDragging.circleElement.attr('cy', this.edgeDragging.dragPoint2.y);
     }
@@ -130,7 +133,7 @@ export class FcEdgeDraggingService {
         };
 
         this.edgeDragging.pathElement.attr('d',
-          this.edgeDrawingService.getEdgeDAttribute(this.edgeDragging.dragPoint1, this.edgeDragging.dragPoint2, this.edgeStyle));
+          this.edgeDrawingService.getEdgeDAttribute(this.edgeDragging.dragPoint1, this.edgeDragging.dragPoint2, this.edgeStyle, this.verticalEdgeEnabled));
         this.edgeDragging.circleElement.attr('cx', this.edgeDragging.dragPoint2.x);
         this.edgeDragging.circleElement.attr('cy', this.edgeDragging.dragPoint2.y);
 
@@ -198,7 +201,7 @@ export class FcEdgeDraggingService {
 
           this.edgeDragging.dragPoint2 = this.modelService.connectors.getCenteredCoord(connector.id);
           this.edgeDragging.pathElement.attr('d',
-            this.edgeDrawingService.getEdgeDAttribute(this.edgeDragging.dragPoint1, this.edgeDragging.dragPoint2, this.edgeStyle));
+            this.edgeDrawingService.getEdgeDAttribute(this.edgeDragging.dragPoint1, this.edgeDragging.dragPoint2, this.edgeStyle, this.verticalEdgeEnabled));
           this.edgeDragging.circleElement.attr('cx', this.edgeDragging.dragPoint2.x);
           this.edgeDragging.circleElement.attr('cy', this.edgeDragging.dragPoint2.y);
 
