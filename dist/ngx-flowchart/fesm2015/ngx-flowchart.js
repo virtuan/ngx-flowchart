@@ -101,7 +101,7 @@ function fcTopSort(graph) {
 }
 
 class FcModelService {
-    constructor(modelValidation, model, modelChanged, detectChangesSubject, selectedObjects, dropNode, createEdge, edgeAddedCallback, nodeRemovedCallback, edgeRemovedCallback, canvasHtmlElement, svgHtmlElement) {
+    constructor(modelValidation, model, modelChanged, detectChangesSubject, selectedObjects, dropNode, createEdge, edgeAddedCallback, nodeRemovedCallback, edgeRemovedCallback, canvasHtmlElement, svgHtmlElement, verticaledgeenabled) {
         this.connectorsRectInfos = {};
         this.nodesHtmlElements = {};
         this.canvasHtmlElement = null;
@@ -116,6 +116,7 @@ class FcModelService {
         this.svgHtmlElement = svgHtmlElement;
         this.modelValidation.validateModel(this.model);
         this.selectedObjects = selectedObjects;
+        this.verticaledgeenabled = verticaledgeenabled;
         this.dropNode = dropNode || (() => { });
         this.createEdge = createEdge || ((event, edge) => of(Object.assign(Object.assign({}, edge), { label: 'label' })));
         this.edgeAddedCallback = edgeAddedCallback || (() => { });
@@ -325,18 +326,34 @@ class ConnectorsModel extends AbstractFcModel {
         if (connectorRectInfo === null || connectorRectInfo === undefined || canvas === null) {
             return { x: 0, y: 0 };
         }
-        let x = connectorRectInfo.type === FlowchartConstants.leftConnectorType ?
-            connectorRectInfo.nodeRectInfo.left() : connectorRectInfo.nodeRectInfo.right();
-        let y = connectorRectInfo.nodeRectInfo.top() + connectorRectInfo.nodeRectInfo.height() / 2;
-        if (!centered) {
-            x -= connectorRectInfo.width / 2;
-            y -= connectorRectInfo.height / 2;
+        if (this.modelService.verticaledgeenabled) {
+            let x = connectorRectInfo.nodeRectInfo.left() + (connectorRectInfo.nodeRectInfo.width() / 2);
+            let y = connectorRectInfo.type === FlowchartConstants.leftConnectorType ?
+                connectorRectInfo.nodeRectInfo.top() : connectorRectInfo.nodeRectInfo.bottom();
+            if (!centered) {
+                x -= connectorRectInfo.width / 2;
+                y -= connectorRectInfo.height / 2;
+            }
+            const coords = {
+                x: Math.round(x),
+                y: Math.round(y)
+            };
+            return coords;
         }
-        const coords = {
-            x: Math.round(x),
-            y: Math.round(y)
-        };
-        return coords;
+        else {
+            let x = connectorRectInfo.type === FlowchartConstants.leftConnectorType ?
+                connectorRectInfo.nodeRectInfo.left() : connectorRectInfo.nodeRectInfo.right();
+            let y = connectorRectInfo.nodeRectInfo.top() + connectorRectInfo.nodeRectInfo.height() / 2;
+            if (!centered) {
+                x -= connectorRectInfo.width / 2;
+                y -= connectorRectInfo.height / 2;
+            }
+            const coords = {
+                x: Math.round(x),
+                y: Math.round(y)
+            };
+            return coords;
+        }
     }
     getCoords(connectorId) {
         return this._getCoords(connectorId, false);
@@ -906,30 +923,16 @@ class FcEdgeDrawingService {
     constructor() {
     }
     getEdgeDAttribute(pt1, pt2, style, verticaledgeenabled) {
-        if (verticaledgeenabled) {
-            let dAddribute = `M ${pt1.x - 93}, ${pt1.y + 25} `;
-            dAddribute += `L ${pt2.x + 93}, ${pt2.y - 25}`;
-            //       if (style === FlowchartConstants.curvedStyle) {
-            //         const sourceTangent = this.computeEdgeSourceTangent(pt1, pt2);
-            //         const destinationTangent = this.computeEdgeDestinationTangent(pt1, pt2);
-            //         dAddribute += `C ${sourceTangent.x - 50}, ${sourceTangent.y} ${(destinationTangent.x + 50)}, ${destinationTangent.y} ${pt2.x + 93}, ${pt2.y -25}`;
-            //       } else {
-            //         dAddribute += `L ${pt2.x}, ${pt2.y}`;
-            //       }
-            return dAddribute;
+        let dAddribute = `M ${pt1.x}, ${pt1.y} `;
+        if (style === FlowchartConstants.curvedStyle) {
+            const sourceTangent = this.computeEdgeSourceTangent(pt1, pt2);
+            const destinationTangent = this.computeEdgeDestinationTangent(pt1, pt2);
+            dAddribute += `C ${sourceTangent.x}, ${sourceTangent.y} ${(destinationTangent.x - 50)}, ${destinationTangent.y} ${pt2.x}, ${pt2.y}`;
         }
         else {
-            let dAddribute = `M ${pt1.x}, ${pt1.y} `;
-            if (style === FlowchartConstants.curvedStyle) {
-                const sourceTangent = this.computeEdgeSourceTangent(pt1, pt2);
-                const destinationTangent = this.computeEdgeDestinationTangent(pt1, pt2);
-                dAddribute += `C ${sourceTangent.x}, ${sourceTangent.y} ${(destinationTangent.x - 50)}, ${destinationTangent.y} ${pt2.x}, ${pt2.y}`;
-            }
-            else {
-                dAddribute += `L ${pt2.x}, ${pt2.y}`;
-            }
-            return dAddribute;
+            dAddribute += `L ${pt2.x}, ${pt2.y}`;
         }
+        return dAddribute;
     }
     getEdgeCenter(pt1, pt2) {
         return {
@@ -1377,7 +1380,7 @@ class NgxFlowchartComponent {
         }
         this.userNodeCallbacks = this.userCallbacks.nodeCallbacks;
         const element = $(this.elementRef.nativeElement);
-        this.modelService = new FcModelService(this.modelValidation, this.model, this.modelChanged, this.detectChangesSubject, this.selectedObjects, this.userCallbacks.dropNode, this.userCallbacks.createEdge, this.userCallbacks.edgeAdded, this.userCallbacks.nodeRemoved, this.userCallbacks.edgeRemoved, element[0], element[0].querySelector('svg'));
+        this.modelService = new FcModelService(this.modelValidation, this.model, this.modelChanged, this.detectChangesSubject, this.selectedObjects, this.userCallbacks.dropNode, this.userCallbacks.createEdge, this.userCallbacks.edgeAdded, this.userCallbacks.nodeRemoved, this.userCallbacks.edgeRemoved, element[0], element[0].querySelector('svg'), this.verticaledgeenabled);
         if (this.dropTargetId) {
             this.modelService.dropTargetId = this.dropTargetId;
         }

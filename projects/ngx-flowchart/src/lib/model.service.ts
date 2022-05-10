@@ -32,6 +32,7 @@ export class FcModelService {
   edgeAddedCallback: (edge: FcEdge) => void;
   nodeRemovedCallback: (node: FcNode) => void;
   edgeRemovedCallback: (edge: FcEdge) => void;
+  verticaledgeenabled: boolean;
 
   dropTargetId: string;
 
@@ -53,7 +54,8 @@ export class FcModelService {
               nodeRemovedCallback: (node: FcNode) => void,
               edgeRemovedCallback: (edge: FcEdge) => void,
               canvasHtmlElement: HTMLElement,
-              svgHtmlElement: SVGElement) {
+              svgHtmlElement: SVGElement,
+              verticaledgeenabled: boolean) {
 
     this.modelValidation = modelValidation;
     this.model = model;
@@ -63,6 +65,7 @@ export class FcModelService {
     this.svgHtmlElement = svgHtmlElement;
     this.modelValidation.validateModel(this.model);
     this.selectedObjects = selectedObjects;
+    this.verticaledgeenabled = verticaledgeenabled;
 
     this.dropNode = dropNode || (() => {});
     this.createEdge = createEdge || ((event, edge) => of({...edge, label: 'label'}));
@@ -308,18 +311,34 @@ class ConnectorsModel extends AbstractFcModel<FcConnector> {
     if (connectorRectInfo === null || connectorRectInfo === undefined || canvas === null) {
       return {x: 0, y: 0};
     }
-    let x = connectorRectInfo.type === FlowchartConstants.leftConnectorType ?
-      connectorRectInfo.nodeRectInfo.left() : connectorRectInfo.nodeRectInfo.right();
-    let y = connectorRectInfo.nodeRectInfo.top() + connectorRectInfo.nodeRectInfo.height() / 2;
-    if (!centered) {
-      x -= connectorRectInfo.width / 2;
-      y -= connectorRectInfo.height / 2;
+    if(this.modelService.verticaledgeenabled) {
+      let x = connectorRectInfo.nodeRectInfo.left() + (connectorRectInfo.nodeRectInfo.width() / 2) ;
+      let y = connectorRectInfo.type === FlowchartConstants.leftConnectorType ?
+                    connectorRectInfo.nodeRectInfo.top() : connectorRectInfo.nodeRectInfo.bottom();
+      if (!centered) {
+        x -= connectorRectInfo.width / 2;
+        y -= connectorRectInfo.height / 2;
+      }
+      const coords: FcCoords = {
+        x: Math.round(x),
+        y: Math.round(y)
+      };
+      return coords;
+    } else {
+      let x = connectorRectInfo.type === FlowchartConstants.leftConnectorType ?
+        connectorRectInfo.nodeRectInfo.left() : connectorRectInfo.nodeRectInfo.right();
+      let y = connectorRectInfo.nodeRectInfo.top() + connectorRectInfo.nodeRectInfo.height() / 2;
+      if (!centered) {
+        x -= connectorRectInfo.width / 2;
+        y -= connectorRectInfo.height / 2;
+      }
+      const coords: FcCoords = {
+        x: Math.round(x),
+        y: Math.round(y)
+      };
+      return coords;
     }
-    const coords: FcCoords = {
-      x: Math.round(x),
-      y: Math.round(y)
-    };
-    return coords;
+
   }
 
   public getCoords(connectorId: string): FcCoords {

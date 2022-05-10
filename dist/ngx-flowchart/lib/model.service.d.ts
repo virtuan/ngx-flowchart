@@ -17,13 +17,14 @@ export declare class FcModelService {
     edgeAddedCallback: (edge: FcEdge) => void;
     nodeRemovedCallback: (node: FcNode) => void;
     edgeRemovedCallback: (edge: FcEdge) => void;
+    verticaledgeenabled: boolean;
     dropTargetId: string;
     private readonly modelChanged;
     private readonly debouncer;
     connectors: ConnectorsModel;
     nodes: NodesModel;
     edges: EdgesModel;
-    constructor(modelValidation: FcModelValidationService, model: FcModel, modelChanged: EventEmitter<any>, detectChangesSubject: Subject<any>, selectedObjects: any[], dropNode: (event: Event, node: FcNode) => void, createEdge: (event: Event, edge: FcEdge) => Observable<FcEdge>, edgeAddedCallback: (edge: FcEdge) => void, nodeRemovedCallback: (node: FcNode) => void, edgeRemovedCallback: (edge: FcEdge) => void, canvasHtmlElement: HTMLElement, svgHtmlElement: SVGElement);
+    constructor(modelValidation: FcModelValidationService, model: FcModel, modelChanged: EventEmitter<any>, detectChangesSubject: Subject<any>, selectedObjects: any[], dropNode: (event: Event, node: FcNode) => void, createEdge: (event: Event, edge: FcEdge) => Observable<FcEdge>, edgeAddedCallback: (edge: FcEdge) => void, nodeRemovedCallback: (node: FcNode) => void, edgeRemovedCallback: (edge: FcEdge) => void, canvasHtmlElement: HTMLElement, svgHtmlElement: SVGElement, verticaledgeenabled: boolean);
     notifyModelChanged(): void;
     detectChanges(): void;
     selectObject(object: any): void;

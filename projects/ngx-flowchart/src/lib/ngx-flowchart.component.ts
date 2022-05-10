@@ -145,7 +145,7 @@ export class NgxFlowchartComponent implements OnInit, DoCheck {
     this.modelService = new FcModelService(this.modelValidation, this.model, this.modelChanged,
       this.detectChangesSubject, this.selectedObjects,
       this.userCallbacks.dropNode, this.userCallbacks.createEdge, this.userCallbacks.edgeAdded, this.userCallbacks.nodeRemoved,
-      this.userCallbacks.edgeRemoved, element[0], element[0].querySelector('svg'));
+      this.userCallbacks.edgeRemoved, element[0], element[0].querySelector('svg'), this.verticaledgeenabled);
 
     if (this.dropTargetId) {
       this.modelService.dropTargetId = this.dropTargetId;
