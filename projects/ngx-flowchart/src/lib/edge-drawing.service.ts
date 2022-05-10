@@ -9,11 +9,11 @@ export class FcEdgeDrawingService {
 
   public getEdgeDAttribute(pt1: FcCoords, pt2: FcCoords, style: string, verticaledgeenabled: boolean): string {
     if (verticaledgeenabled){
-      let dAddribute = `M ${pt1.x - 50}, ${pt1.y+ 25} `;
+      let dAddribute = `M ${pt1.x - 76}, ${pt1.y+ 25} `;
       if (style === FlowchartConstants.curvedStyle) {
         const sourceTangent = this.computeEdgeSourceTangent(pt1, pt2);
         const destinationTangent = this.computeEdgeDestinationTangent(pt1, pt2);
-        dAddribute += `C ${sourceTangent.x - 50}, ${sourceTangent.y} ${(destinationTangent.x)}, ${destinationTangent.y} ${pt2.x}, ${pt2.y}`;
+        dAddribute += `C ${sourceTangent.x - 50}, ${sourceTangent.y} ${(destinationTangent.x)}, ${destinationTangent.y} ${pt2.x + 76}, ${pt2.y}`;
       } else {
         dAddribute += `L ${pt2.x}, ${pt2.y}`;
       }
